@@ -6,7 +6,7 @@ import type { SuiTransactionBlockResponse } from '@mysten/sui/client';
 
 const SUI_TESTNET_RPC_URL = 'https://fullnode.testnet.sui.io:443';
 
-// Package IDs from the deployed contract
+// Package IDs from the deployed contract - Now using environment variables from Vercel
 const M2_RIDE_SYNC_PACKAGE_ID = process.env.M2_RIDE_SYNC_PACKAGE_ID || '0xc1e28ae1e7ed67a5d9f32e53d4fec24a2eb48a0d9a58450ba605c0a4b2febf23';
 const M2_RIDE_SYNC_STATE_ID = process.env.M2_RIDE_SYNC_STATE_ID || '0xb7d367a4498c25a6044a1e6e4dab8a4a2b6cb443b2660a0cea0b94d06cb5a837';
 const M2_ROLE_MANAGER_ID = process.env.M2_ROLE_MANAGER_ID || '0x3d220fd5f521a3b6e062b4a76399501c0386e64e73332d79b0575af138664433';
@@ -29,8 +29,8 @@ export enum Role {
 
 let client: SuiClient;
 
-// Set to true temporarily to add admin role to our wallet
-let testMode = true;
+// Set to false for production use with real blockchain transactions
+let testMode = false;
 
 // For testing purposes, use a mock keypair if we're not in production
 class MockKeypair {
