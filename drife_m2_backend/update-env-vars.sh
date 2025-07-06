@@ -6,14 +6,20 @@ echo "=========================================="
 echo "DRIFE M2 Backend - Setting Vercel Environment Variables"
 echo "=========================================="
 
-# Use npx vercel directly
-VERCEL_CMD="npx vercel"
+# Check if Vercel CLI is installed
+if ! command -v vercel &> /dev/null
+then
+    echo "Vercel CLI is not installed. Using npx..."
+    VERCEL_CMD="npx vercel"
+else
+    VERCEL_CMD="vercel"
+fi
 
-# Default values for testing if not set
-M2_RIDE_SYNC_PACKAGE_ID=${M2_RIDE_SYNC_PACKAGE_ID:-"0xb527efb9252944cb36c454c02a599c62244f509021208b401a403000d52af576"}
-M2_RIDE_SYNC_STATE_ID=${M2_RIDE_SYNC_STATE_ID:-"0x74eff8e36662cd47344b8fdf76443a55c22c8d67dbfaf7b67224e223ddede728"}
-M2_ROLE_MANAGER_ID=${M2_ROLE_MANAGER_ID:-"0xeca87408e738979e76ec3bf9793b92a850359e6a75b8b23c3183771e73e32abf"}
-DRIFE_ADMIN_SUI_PRIVATE_KEY=${DRIFE_ADMIN_SUI_PRIVATE_KEY:-"YOUR_DEFAULT_PRIVATE_KEY"}
+# Updated values with redeployed contract IDs
+M2_RIDE_SYNC_PACKAGE_ID=${M2_RIDE_SYNC_PACKAGE_ID:-"0xc1e28ae1e7ed67a5d9f32e53d4fec24a2eb48a0d9a58450ba605c0a4b2febf23"}
+M2_RIDE_SYNC_STATE_ID=${M2_RIDE_SYNC_STATE_ID:-"0xb7d367a4498c25a6044a1e6e4dab8a4a2b6cb443b2660a0cea0b94d06cb5a837"}
+M2_ROLE_MANAGER_ID=${M2_ROLE_MANAGER_ID:-"0x3d220fd5f521a3b6e062b4a76399501c0386e64e73332d79b0575af138664433"}
+DRIFE_ADMIN_SUI_PRIVATE_KEY=${DRIFE_ADMIN_SUI_PRIVATE_KEY:-"sEzcljv7WndhH9y5bN+cH6anFXNwhJl4EmkmB6sBJkQ="}
 
 # Function to set an environment variable
 set_env_var() {
@@ -27,14 +33,22 @@ set_env_var() {
   $VERCEL_CMD env add $name production <<< "$value"
 }
 
-# Set all environment variables
+# Delete all existing environment variables first
+echo "Removing existing environment variables..."
+$VERCEL_CMD env rm M2_RIDE_SYNC_PACKAGE_ID production --yes || true
+$VERCEL_CMD env rm M2_RIDE_SYNC_STATE_ID production --yes || true
+$VERCEL_CMD env rm M2_ROLE_MANAGER_ID production --yes || true
+$VERCEL_CMD env rm DRIFE_ADMIN_SUI_PRIVATE_KEY production --yes || true
+
+echo "Setting new environment variables..."
+# Set all environment variables with updated values
 set_env_var "M2_RIDE_SYNC_PACKAGE_ID" "$M2_RIDE_SYNC_PACKAGE_ID"
 set_env_var "M2_RIDE_SYNC_STATE_ID" "$M2_RIDE_SYNC_STATE_ID"
 set_env_var "M2_ROLE_MANAGER_ID" "$M2_ROLE_MANAGER_ID"
 set_env_var "DRIFE_ADMIN_SUI_PRIVATE_KEY" "$DRIFE_ADMIN_SUI_PRIVATE_KEY"
 
 echo "=========================================="
-echo "Environment variables set successfully!"
+echo "Environment variables updated successfully!"
 echo "=========================================="
 
 # Trigger a redeployment
