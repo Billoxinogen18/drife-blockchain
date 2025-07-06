@@ -1,0 +1,10 @@
+[package]
+name = "drife_m1_wallet_pkg"
+version = "2.0.0"
+edition = "2024.beta"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+drife_m1_wallet_pkg = "0x0"

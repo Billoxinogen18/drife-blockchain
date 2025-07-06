@@ -1,0 +1,11 @@
+[package]
+name = "drife_m3_rewards_pkg"
+version = "2.0.0"
+edition = "2024.beta"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+drife_token_pkg = { local = "../drife_token_project" }
+
+[addresses]
+drife_m3_rewards_pkg = "0x0"
